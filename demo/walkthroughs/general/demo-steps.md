@@ -135,6 +135,19 @@ You are a security engineer. Create a CVEFinder.prompt.md that does a deep inspe
 
 ---
 
+### Custom Agents & Sub-Agents (Agent Orchestration)
+
+**NOTE:** Ensure that the Agent Debug Log Panel [setting](https://code.visualstudio.com/docs/agents/agent-troubleshooting/chat-debug-view#_agent-debug-log-panel) is enabled before invoking the custom agent. We'll be reviewing the agent logs in the later section.
+
+**[PROMPT]** `[Use accessibility-report custom-agent]`
+```
+Generate accessibility reports
+```
+
+> **NOTE:** Take a look at the GitHub issue that the local agent created while it implements the cart functionality. Also, review the outputs of cloud agent and background agent
+
+---
+
 ### Plan Mode & Issue Creation
 
 ---
@@ -169,17 +182,6 @@ Please implement the changes. Comment on the github issue as you complete each p
 
 ---
 
-### Custom Agents & Sub-Agents (Agent Orchestration)
-
-**[PROMPT]** `[Use accessibility-report custom-agent]`
-```
-Generate accessibility reports
-```
-
-> **NOTE:** Take a look at the GitHub issue that the local agent created while it implements the cart functionality. Also, review the outputs of cloud agent and background agent
-
----
-
 ### Agent Skills (api-endpoint skill)
 
 **[PROMPT]**
@@ -207,6 +209,19 @@ At this point, you should already have multiple agent session audit logs created
 - `session-start-audit.sh` script creates a baseline snapshot to track the branch and commit history before the agent session beings
 - `session-stop-audit.sh` script tracks the files modified/created by the agent, commits made, and session duration
 - The hook stores the session-start and session-stop logs under `.agent-audit/{sessionID}` directory. 
+
+---
+
+### Agent Debug Logs / Flow Chart
+
+**NOTE:** You must have completed the Custom Agents & Sub agents section above to successfully view the agent debug logs for the report generation session. You can still view a different session in the agent debug logs/flowchart.
+
+Agent Debug Log panel is a powerful tool for troubleshooting agent workflows, understanding model selection, and viewing a chronological event log of agent interactions during a chat session, making it especially useful when debugging custom agents and orchestrated sub-agent workflows.
+
+1) Open the Agent Debug Log Panel using the instructions [here](https://code.visualstudio.com/docs/agents/agent-troubleshooting/chat-debug-view#_agent-debug-log-panel)
+2) By default the panel shows a [Tree View](https://code.visualstudio.com/docs/agents/agent-troubleshooting/chat-debug-view#_logs-view). Switch to the [Summary view](https://code.visualstudio.com/docs/agents/agent-troubleshooting/chat-debug-view#_summary-view) by clicking the top of the tree in `Agent Debug Logs > Report Generation Request > Logs`
+3) Pick the relevant session that shows the custom-agent & sub-agent invocation
+4) Select Agent Flow Chart and view the subagent workflows which shows: tool calls, model selection, user messages, and agent responses
 
 ---
 
