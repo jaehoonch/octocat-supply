@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useQuery } from 'react-query';
 import { api } from '../../../api/config';
 import { useTheme } from '../../../context/ThemeContext';
+import StarRating from './StarRating';
 
 interface Product {
   productId: number;
@@ -23,6 +24,7 @@ const fetchProducts = async (): Promise<Product[]> => {
 
 export default function Products() {
   const [quantities, setQuantities] = useState<Record<number, number>>({});
+  const [ratings, setRatings] = useState<Record<number, number>>({});
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [showModal, setShowModal] = useState(false);
@@ -64,6 +66,13 @@ export default function Products() {
   const handleProductClick = (product: Product) => {
     setSelectedProduct(product);
     setShowModal(true);
+  };
+
+  const handleRate = (productId: number, rating: number) => {
+    setRatings((prev) => ({
+      ...prev,
+      [productId]: rating,
+    }));
   };
 
   if (isLoading) {
@@ -189,6 +198,14 @@ export default function Products() {
                   >
                     {product.description}
                   </p>
+                  <div className="mb-4">
+                    <StarRating
+                      productId={product.productId}
+                      productName={product.name}
+                      rating={ratings[product.productId] || 0}
+                      onRate={handleRate}
+                    />
+                  </div>
                   <div className="space-y-4 mt-auto">
                     <div className="flex justify-between items-center">
                       {hasDiscount ? (
@@ -301,6 +318,14 @@ export default function Products() {
             >
               {selectedProduct.description}
             </p>
+            <div className="mt-4">
+              <StarRating
+                productId={selectedProduct.productId}
+                productName={selectedProduct.name}
+                rating={ratings[selectedProduct.productId] || 0}
+                onRate={handleRate}
+              />
+            </div>
           </div>
         </div>
       )}
