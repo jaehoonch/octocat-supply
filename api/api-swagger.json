@@ -519,6 +519,53 @@
                 }
             }
         },
+        "/api/orders/branch/{branchId}/count": {
+            "get": {
+                "summary": "Count orders for a branch",
+                "tags": [
+                    "Orders"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "branchId",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Branch ID"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Number of orders for the branch",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "required": [
+                                        "branchId",
+                                        "count"
+                                    ],
+                                    "properties": {
+                                        "branchId": {
+                                            "type": "integer"
+                                        },
+                                        "count": {
+                                            "type": "integer",
+                                            "minimum": 0
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid branch ID"
+                    }
+                }
+            }
+        },
         "/api/orders/{id}": {
             "get": {
                 "summary": "Get an order by ID",

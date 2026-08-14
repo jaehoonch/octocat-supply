@@ -58,6 +58,21 @@ export class OrdersRepository {
   }
 
   /**
+   * Count orders by branch ID
+   */
+  async countByBranch(branchId: number): Promise<number> {
+    try {
+      const result = await this.db.get<{ count: number }>(
+        'SELECT COUNT(*) as count FROM orders WHERE branch_id = ?',
+        [branchId],
+      );
+      return result?.count || 0;
+    } catch (error) {
+      handleDatabaseError(error);
+    }
+  }
+
+  /**
    * Update order by ID
    */
   async update(id: number, order: Partial<Omit<Order, 'orderId'>>): Promise<Order> {

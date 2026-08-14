@@ -37,6 +37,34 @@
  *             schema:
  *               $ref: '#/components/schemas/Order'
  *
+ * /api/orders/branch/{branchId}/count:
+ *   get:
+ *     summary: Count orders for a branch
+ *     tags: [Orders]
+ *     parameters:
+ *       - in: path
+ *         name: branchId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Branch ID
+ *     responses:
+ *       200:
+ *         description: Number of orders for the branch
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               required: [branchId, count]
+ *               properties:
+ *                 branchId:
+ *                   type: integer
+ *                 count:
+ *                   type: integer
+ *                   minimum: 0
+ *       400:
+ *         description: Invalid branch ID
+ *
  * /api/orders/{id}:
  *   get:
  *     summary: Get an order by ID
@@ -102,7 +130,7 @@
 import express from 'express';
 import { Order } from '../models/order';
 import { getOrdersRepository } from '../repositories/ordersRepo';
-import { handleDatabaseError, NotFoundError } from '../utils/errors';
+import { NotFoundError } from '../utils/errors';
 
 const router = express.Router();
 
@@ -130,6 +158,23 @@ router.get('/', async (req, res, next) => {
     }
 
     res.json(orders);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Count orders by branch ID
+router.get('/branch/:branchId/count', async (req, res, next) => {
+  try {
+    const branchId = Number(req.params.branchId);
+    if (!Number.isInteger(branchId) || branchId <= 0) {
+      res.status(400).json({ error: 'Branch ID must be a positive integer' });
+      return;
+    }
+
+    const repo = await getOrdersRepository();
+    const count = await repo.countByBranch(branchId);
+    res.json({ branchId, count });
   } catch (error) {
     next(error);
   }

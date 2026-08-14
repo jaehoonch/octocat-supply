@@ -1,0 +1,15 @@
+{
+  "session_id": "391db759-6896-4578-bb55-e2db4a490b89",
+  "timestamp": "2026-08-14T00:34:34.984Z",
+  "branch": "main",
+  "commit": "eea2cfbcdba230fc8021bc16cea602c3dc6b00fb",
+  "commit_message": "Added Agent Debug Log Panel section to demo script",
+  "dirty_files": [],
+  "migrations": {
+    "count": 2,
+    "files": [
+      "001_init.sql",
+      "002_add_supplier_status_fields.sql"
+    ]
+  }
+}
